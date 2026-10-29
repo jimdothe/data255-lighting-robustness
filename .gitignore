@@ -1,0 +1,39 @@
+# Local configuration and environments
+.env
+.env.*
+!.env.example
+.venv/
+venv/
+.DS_Store
+.cache/
+
+# Python and notebook caches
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+.pytest_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Dataset files belong outside Git
+data/*
+!data/README.md
+*.zip
+*.tar
+*.tar.gz
+*.tgz
+
+# Weights, generated runs and large prediction outputs
+*.pt
+*.pth
+*.ckpt
+*.safetensors
+*.onnx
+outputs/
+runs/
+logs/
+wandb/
+mlruns/
+results/raw/
+results/predictions/

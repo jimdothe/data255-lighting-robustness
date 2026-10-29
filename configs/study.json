@@ -1,0 +1,61 @@
+{
+  "status": "planned_not_yet_implemented",
+  "project": "Effects of Lighting Augmentation on Industrial Anomaly Detection",
+  "team": "Team 1",
+  "dataset": {
+    "name": "MVTec AD 2",
+    "root_environment_variable": "MVTEC_AD2_ROOT",
+    "categories": ["rice", "walnuts"],
+    "minimum_categories": ["rice"],
+    "preserve_official_splits": true,
+    "mirror_revision": "47809f7e8f0ec9991cc03083aeeba82d83cd3abf"
+  },
+  "images": {
+    "tile_size": [256, 256],
+    "stride": 256,
+    "anchor_final_tile_to_edge": true,
+    "image_score": "maximum_anomaly_map_value_across_all_tiles"
+  },
+  "training": {
+    "seeds": [11, 22, 33],
+    "reference": {
+      "model": "small_convolutional_autoencoder",
+      "steps": 10000
+    },
+    "strong_baseline": {
+      "model": "efficient_ad_s",
+      "implementation": "anomalib",
+      "steps": 40000,
+      "batch_size": 1,
+      "teacher": "pretrained_teacher_small.pth",
+      "auxiliary_data": "Imagenette",
+      "preserve_native_losses_and_augmentation": true
+    }
+  },
+  "extra_augmentation": {
+    "S00": {"brightness": false, "contrast": false},
+    "S10": {"brightness": true, "contrast": false},
+    "S01": {"brightness": false, "contrast": true},
+    "S11": {"brightness": true, "contrast": true},
+    "shared_application_probability": 0.5,
+    "independent_factor_range": [0.8, 1.2],
+    "order": ["brightness", "contrast"],
+    "separate_random_stream": true,
+    "enabled_during_evaluation": false
+  },
+  "evaluation": {
+    "primary_metric": "image_auroc_pooled_over_shifted_lighting_per_category_then_macro_average",
+    "secondary_metrics": ["regular_light_auroc", "per_light_auroc", "auprc", "recall", "false_positive_rate", "full_image_latency"],
+    "threshold": "95th_percentile_of_normal_validation_image_scores_per_model_category_seed",
+    "uncertainty": "paired_physical_scene_cluster_bootstrap",
+    "main_comparison": ["S11", "S00"],
+    "ablations": [["S11", "S01"], ["S11", "S10"]],
+    "freeze_protocol_before_test": true
+  },
+  "compute_plan": {
+    "pilot_steps": 1000,
+    "training_budget_hours": 48,
+    "evaluation_budget_hours": 8,
+    "runtime_measured": false
+  }
+}
