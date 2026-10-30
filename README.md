@@ -1,4 +1,4 @@
-# Lighting Augmentation for Industrial Anomaly Detection
+# Effects of Lighting Augmentation on Industrial Anomaly Detection
 
 DATA 255, Team 1, Fall 2026.
 
